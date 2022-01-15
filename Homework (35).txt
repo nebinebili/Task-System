@@ -1,0 +1,51 @@
+1) 
+Reference type-lar Managed heap-de nece yerleshir,
+Min nece bayt yer ayrilir.-12 bayt ayirir
+
+4 bytes for Object Header Word;
+4 bytes for Method Table Pointer;
+4 bytes for instance fields
+
+Sinifinizin yalnız bayt sahəsi olduqda, o, məsələn, sahələr üçün hələ də 4 bayt yer tutacaq, çünki obyektlər 4 baytlıq çoxluqlarla uyğunlaşdırılmalıdır. 
+Sinifinizin fieldleri olmadığı halda belə, o, yenə də 4 bayt tutacaq. Buna görə də, 32 bitlik sistemdə ən kiçik 12 bayt olacaq.
+
+64 bitlik sistemdə 4 əvəzinə 8 baytdır və obyektlər ən yaxın 8 baytlıq çoxluğa uyğunlaşdırılır, beləliklə, bu halda refernce type 24 bayt olacaq.
+
+2)
+Reference typelar yarandiqda onlar ucun ayrica 2 yer ayrilir.Object header ve syncnlock
+Object Header - ichinde neler var ?  (etrafli)
+Object header ibaretdi
+
+Header-x86 (32 bit) process -4 bytes, x64 process  -8 bytes.
+Method-0
+Object-8/16 byte
+
+Object header daxilinde:Thin lock information,App domain index,Sync block index,Hash code 
+BIT_SBLK_IS_HASHCODE,BIT_SBLK_IS_HASH_OR_SYNCBLKINDEX ,BIT_SBLK_SPIN_LOCK,BIT_SBLK_GC_RESERVE
+,BIT_SBLK_FINALIZER_RUN ,BIT_SBLK_AGILE_IN_PROGRESS
+
+SyncBlock haqqinda (etrafli)
+SyncBlock əsasən thread sinxronizasiyası haqqında məlumatı saxlayan məlumat strukturudur ( Monitor.Enter , Exit və Monitor.Wait , Pulse). 
+Lakin o, həmçinin hash kodu və appdomeni indeksi kimi digər məlumatları da saxlayır. 
+Beləliklə, headre de kifayət qədər yerimiz olmadıqda, SyncBlock yaradılacaq və bütün məlumatlar orada saxlanacaq. 
+Bütün sync blocklari indekslə əldə edilə bilən massivdə saxlanılır.
+
+sinxron bloklar massivi (SyncBlockArray) və SyncTableEntry cədvəli və SyncBlockCache keş meneceri var.
+Sinxronizasiya blokunun hər indeksi sinxronizasiya cədvəli girişinə işarə edir ki, bu da öz növbəsində sinxronizasiya blokuna və obyektə işarə edir . 
+Keş isi serialın özündə və girişlər cədvəlində sinxronizasiya bloklarını ayırmaq və buraxmaqdır. 
+Sinxronizasiya bloku lazım olmadıqda GC tərəfindən geri alınır, lakin onlar təkrar istifadə edilə bilər .
+
+3) 
+Deadlock Real heyata aid numune.
+Avdobusda yer verirsen kimese o deyirki qabagda dusecem otur sen mende deyrem yoxe gel otur belelikle heckim oturmur.
+Borc goturduyum adam gelr pulu isdiyir 1 gun sonra mutlqe vereceyimi deyrem o ise indi isdiyir mende de pul yoxdu olur deadlock:)
+
+4) 
+AsyncCallback nedir ?
+async Metod emeliyyati bitirdikdə, metod AsyncCallback avtomatik olaraq çağırılır, burada emeliyyatdan sonrakı ifadələr yerinə yetirilə bilər
+AsyncCallback isdetdiyi method bunu cagiran methodun isi bitdikden sora ise dusur. 
+Elave olara bizden her hansi object de isdiye biler.Bu object AsyncCallback in isdetdiyi methoda parametr olaraq gonderilmek ucundu.
+
+AsyncState property bize ne qaytarir ?-object qaytarir
+
+
